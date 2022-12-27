@@ -1,2 +1,2 @@
-# TalonHardSleep
-The hard sleep mode for Talon Voice requires consecutively saying talon wake to wakeup talon.
+# Talon Hard Sleep
+The hard sleep mode for Talon Voice requires consecutively saying talon wake to wakeup talon. The default number of required consecutive times is 3. You can change the number of times you must consecutively tell talon to wake up to exit hard sleep in the settings.talon. Saying anything other than talon wake in the hard sleep mode resets the wakeup counter so that you would have to start saying talon wake again from the beginning. 
