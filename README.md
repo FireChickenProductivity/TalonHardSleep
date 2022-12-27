@@ -4,3 +4,8 @@ The hard sleep mode for Talon Voice requires consecutively saying talon wake to 
 The user.hard_sleep_wakeup_immediately() action immediately wakes up talon from hard sleep.
 
 If you only want talon to wakeup through something like a keypress, you could set up a talon script to immediately wake up from hard sleep when you press a key and set the amount of times you must say talon wake to wakeup talon to something absurd like 3000000.
+
+# Commands
+talon hard sleep: activates hard sleep
+
+talon wake: must be said consecutively the required number of times to exit hard sleep (the default number of times is 3)
