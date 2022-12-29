@@ -18,7 +18,7 @@ class Actions:
         ''''''
         global wakeup_counter
         wakeup_counter += 1
-        if wakeup_counter >= wakeups_needed.get():
+        if wakeup_counter >= wakeups_needed.get() and wakeups_needed.get() != 0:
             actions.user.hard_sleep_wakeup_immediately()
     
     def hard_sleep_reset_counter():
