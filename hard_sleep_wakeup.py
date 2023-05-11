@@ -1,4 +1,4 @@
-from talon import Module, actions, cron
+from talon import Module, actions, cron, imgui
 
 module = Module()
 
@@ -16,6 +16,13 @@ wakeup_availability_delay = module.setting(
     type = int,
     default = 0,
     desc = 'How long to make waking up from hard sleep unavailable after something is said other than a wakeup command in milliseconds'
+)
+
+should_show_display = module.setting(
+    'hard_sleep_should_show_display',
+    type = int,
+    default = 1,
+    desc = 'Make this 0 if the hard sleep display should not be shown. Make this any other integer otherwise'
 )
 
 wakeup_counter: int = 0
@@ -42,12 +49,15 @@ class Actions:
         actions.user.hard_sleep_reset_counter()
         actions.speech.enable()
         actions.mode.disable('user.hard_sleep')
+        gui.hide()
     
     def hard_sleep_enable():
         ''''''
         actions.speech.disable()
         actions.mode.enable('user.hard_sleep')
         actions.user.hard_sleep_reset_counter()
+        if should_show_hard_sleep_display():
+            gui.show()
     
     def hard_sleep_handle_non_wakeup_speech():
         ''''''
@@ -59,3 +69,13 @@ class Actions:
                 number_of_availability_blocks -= 1
             cron.after(f'{wakeup_availability_delay.get()}ms', after_delay)
         actions.user.hard_sleep_reset_counter()
+
+def should_show_hard_sleep_display() -> bool:
+    return should_show_display.get() != 0
+
+@imgui.open(y = 0, x = 0)
+def gui(gui: imgui.GUI):
+    gui.text('Hard Sleep')
+    gui.text(f'Wakeup counter: {wakeup_counter}')
+    if number_of_availability_blocks > 0:
+        gui.text(f'Temporary unavailability counter: {number_of_availability_blocks}')
