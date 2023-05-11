@@ -5,6 +5,8 @@ The user.hard_sleep_wakeup_immediately() action immediately wakes up talon from 
 
 If you only want talon to wakeup through something like a keypress, you could set up a talon script to immediately wake up from hard sleep when you press a key and set the amount of times you must say talon wake to wakeup talon to 0, which would prevent talon wake from waking it up no matter how many times it is said.
 
+The user.hard_sleep_wakeup_availability_delay setting available in the settings.talon file determines how many milliseconds after saying anything other than talon wake it is impossible to wake up from hard sleep. This is 0 by default, but can be used to make it even more unlikely that talon will get woken up on accident in the middle of a conversation. 
+
 # Commands
 talon hard sleep: activates hard sleep
 
