@@ -25,8 +25,16 @@ should_show_display = module.setting(
     desc = 'Make this 0 if the hard sleep display should not be shown. Make this any other integer otherwise'
 )
 
+wakeup_delay = module.setting(
+    'hard_sleep_wakeup_delay',
+    type = int,
+    default = 0,
+    desc = 'How long to wait before waking up talon from hard sleep in milliseconds.'
+)
+
 wakeup_counter: int = 0
 number_of_availability_blocks: int = 0
+delayed_wakeup_canceled: bool = False
 @module.action_class
 class Actions:
     def hard_sleep_wakeup():
@@ -35,7 +43,15 @@ class Actions:
         wakeup_counter += 1
         if wakeup_counter >= wakeups_needed.get() and wakeups_needed.get() != 0:
             if number_of_availability_blocks == 0:
-                actions.user.hard_sleep_wakeup_immediately()
+                if wakeup_delay.get() == 0:
+                    actions.user.hard_sleep_wakeup_immediately()
+                else:
+                    def wakeup_if_not_canceled():
+                        global delayed_wakeup_canceled
+                        if not delayed_wakeup_canceled:
+                            actions.user.hard_sleep_wakeup_immediately()
+                        delayed_wakeup_canceled = False
+                    cron.after(f'{wakeup_delay.get()}ms', wakeup_if_not_canceled)
             else:
                 wakeup_counter -= 1
     
@@ -69,6 +85,11 @@ class Actions:
                 number_of_availability_blocks -= 1
             cron.after(f'{wakeup_availability_delay.get()}ms', after_delay)
         actions.user.hard_sleep_reset_counter()
+    
+    def hard_sleep_cancel_delayed_wakeup():
+        ''''''
+        global delayed_wakeup_canceled
+        delayed_wakeup_canceled = True
 
 def should_show_hard_sleep_display() -> bool:
     return should_show_display.get() != 0
