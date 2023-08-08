@@ -5,4 +5,4 @@ and mode: user.hard_sleep
 
 <phrase>: user.hard_sleep_handle_non_wakeup_speech()
 
-^welcome back$: user.hard_sleep_handle_non_wakeup_speech()
+^(welcome back)+$: user.hard_sleep_handle_non_wakeup_speech()
