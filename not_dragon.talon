@@ -8,4 +8,4 @@ and mode: user.hard_sleep
 <phrase>: user.hard_sleep_handle_non_wakeup_speech()
 
 ^(wake up)+$: user.hard_sleep_wakeup()
-^talon wake [<phrase>]$: speech.enable()
+^talon wake [<phrase>]$: user.hard_sleep_wakeup()
